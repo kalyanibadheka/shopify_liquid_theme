@@ -1,0 +1,117 @@
+<div class="collection-page">
+  <div class="sidebar">
+    <h3>All Product</h3>
+    <ul>
+      {% for link in linklists.main-menu.links %}
+        <li><a href="{{ link.url }}" class="side-list">{{ link.title }}</a></li>
+      {% endfor %}
+    </ul>
+   
+    <div class="filter-group">
+      <h4>Sort</h4>
+      <select class="sort" onchange="location = this.value;">
+        <option value="{{ collection.url }}">Default</option>
+        <option value="{{ collection.url | append: '?sort_by=price-ascending' }}">Price: Low to High</option>
+        <option value="{{ collection.url | append: '?sort_by=price-descending' }}">Price: High to Low</option>
+      </select>
+    </div>
+  </div>
+  <div class="product-list">
+    {% for product in collection.products %}
+      <div class="product-card">
+        <a href="{{ product.url }}" class="product">
+          <img src="{{ product.featured_image | img_url: 'medium' }}" width="300" height="350" alt="{{ product.title }}">
+          <h2>{{ product.title }}</h2>
+          <p>{{ product.price | money }}</p>
+        </a>
+        <form action="/cart/add" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+          <button type="submit" class="add-to-cart">Add to cart</button>
+        </form>
+        <a href="{{ product.url }}" class="read-more">Read more</a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .collection-page {
+    display: flex;
+  }
+  .sidebar {
+    width: 20%;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+  }
+  .sidebar h3 {
+    margin-bottom: 20px;
+  }
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  .sidebar ul li {
+    margin-bottom: 10px;
+  }
+
+  .filter-group {
+    margin-top: 20px;
+  }
+  .filter-group h4 {
+    margin-bottom: 10px;
+  }
+  .side-list{
+    text-decoration: none;
+    text-transform: capitalize;
+  }
+  .product-list {
+    width: 80%;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .product-card {
+    width: 22%;
+    margin: 1%;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+  }
+  .product-card img {
+    max-width: 100%;
+    height: auto;
+  }
+  .product-card .read-more {
+    display: block;
+    margin-top: 5px;
+    color: #000;
+    text-decoration: underline;
+  }
+  .sort{
+    width: 80%;
+    padding: 10px;
+  }
+  .add-to-cart{
+    padding: 15px 30px;
+    background-color: #A98A86;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: serif;
+    text-transform: uppercase;
+  }
+  .product{
+    text-decoration: none;
+    color: black;
+    font-family: serif;
+    font-size: 21px;
+    text-transform: capitalize;
+  }
+  .product p{
+    margin: 5px 0px;
+  }
+  .product h2{
+    margin-bottom: 5px;
+  }
+</style>
